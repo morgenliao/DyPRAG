@@ -4,16 +4,17 @@
 ![Overall Comparison](assets/intro.png)
 Overview of Dynamic Parametric RAG:
 
-> **Dynamic Parametric RAG (DyPRAG)** is a novel framework that utilizes a lightweight parameter translator model to efficiently map documents into parameterized knowledge by modeling the underlying function from documents to parameters, reducing inference, training and storage costs while enhancing LLMs knowledge in a plug-and-play manner at test-time.
+**Dynamic Parametric RAG (DyPRAG)** is a novel framework that utilizes a lightweight parameter translator model to efficiently map documents into parameterized knowledge by modeling the underlying function from documents to parameters, reducing inference, training and storage costs while enhancing LLMs knowledge in a plug-and-play manner at test-time.
 
-- Extensive experiments on multiple datasets demonstrate DyPRAG’s effectiveness and generalization in test-time knowledge enhancement. 
-- DyPRAG dynamically integrates parameterized knowledge to resolve conflicts between contextual and parametric knowledge, offering a practical solution to mitigate RAG hallucination in real-world applications.
+- Extensive experiments on multiple datasets demonstrate DyPRAG’s <font color="red">**effectiveness and generalization in test-time knowledge enhancement**</font>. 
+- DyPRAG <font color="red">**dynamically integrates parameterized knowledge to resolve conflicts between contextual and parametric knowledge**</font>, offering a practical solution to <font color="red">**mitigate RAG hallucination**</font> in real-world applications.
+- DyPRAG-Combine is a <font color="red">**novel powerful RAG paradigm that combines contextual knowledge with parametric knowledge enable LLMs to better manipulate knowledge and reduce hallucination.**</font>
 
-|Method|Inference Cost|Training Cost|Storage Cost|Generalization|Hallucination|
+|Method|Inference Cost|Training Cost|Storage Cost|Generalization|RAG Hallucination|
 |---|---|---|---|---|---|
 |RAG|🥶|🤓|🤓|🤓|🥶|
 |PRAG|🤓|🥶|🥶|🥶|😳|
-|DyPRAG|🤓|😳|🤓|🤓|🤓|
+|DyPRAG (ours)|🤓|😳|🤓|🤓|🤓|
 
 
 ![Overall Method](assets/method.png)
@@ -30,7 +31,15 @@ conda activate dyprag
 pip install -r requirements.txt
 ```
 ## Data Preparation
-We following [PRAG](https://github.com/oneal2000/PRAG) to prepare the data.
+
+
+> Note: for `data_aug` (test examples in DyPRAG), we use files provided in [PRAG](https://github.com/oneal2000/PRAG/blob/main/data_aug.tar.gz).  
+We also provide our complementation for `data_aug` in `data_aug.tar.gz` and `data_aug_projector` (augmented training examples in DyPRAG) in `data_aug_projector.tar.gz`.  
+In order to extract it, run the command `tar -xzvf data_aug.tar.gz` and `tar -xzvf data_aug_projector.tar.gz` in your terminal.
+
+If you want to rerun this process, please process the following steps:
+> We following [PRAG](https://github.com/oneal2000/PRAG) to prepare the data.
+
 **Prepare retrival data: BM25**
 1. Download the Wikipedia dump from the [DPR repository](https://github.com/facebookresearch/DPR/blob/main/dpr/data/download_data.py#L32) using the following command:
 ```
@@ -92,10 +101,16 @@ rm data/iirc.tgz
 ```
 
 For RAGTruth:
-Download the [RAGTruth](https://github.com/ParticleMedia/RAGTruth/blob/main/dataset/) dataset from its repository https://github.com/ParticleMedia/RAGTruth/blob/main/dataset/, and put  `source_info.jsonl` into folder data/ragtruth.
+
+Download the [RAGTruth](https://github.com/ParticleMedia/RAGTruth/blob/main/dataset/) dataset from its repository https://github.com/ParticleMedia/RAGTruth/blob/main/dataset/ and put  `source_info.jsonl` into folder data/ragtruth.
+```
+mkdir -p data/ragtruth
+wget -P data/ragtruth https://github.com/ParticleMedia/RAGTruth/blob/main/dataset/source_info.jsonl
+```
 
 ## Three Stages Reproduce of DyPRAG
-### Stage1: Doc-Param Pair Collection
+We provide detail command for following three stages in `configs` folder for both PRAG and DyPRAG.
+### Stage 1: Doc-Param Pair Collection
 1. **Data Augmentation**
 ```
 python src/augment.py \
@@ -103,9 +118,9 @@ python src/augment.py \
     --dataset 2wikimultihopqa \
     --data_path data/2wikimultihopqa/ \
     --sample 300  \
-    --topk 3
-    --output_dir data_aug_projector
-    --projector
+    --topk 3 \
+    --output_dir data_aug_projector \
+    --projector \
 ```
 | **Parameter** | **Example/Options** |
 | ------------------------------ | ---------------------------------------------------- |
@@ -117,7 +132,11 @@ python src/augment.py \
 | `output_dir` | folder to save the augmented data |
 | `projector` | whether to use projector |
 The results of data augmentation will be stored in the file `{output_dir}/{dataset}/{data_type}.json`. To reproduce PRAG, you should set `output_dir` to `data_aug` and without `projector`.
+
+
+
 2. **Document Parameterizing**
+
 By calling the `src/encode.py` file, you will generate a parameterized representation $p_i$ of each document $d_i$ for the given dataset. The parameters for this file are as follows:
 
 ```
@@ -166,7 +185,7 @@ offline/
 |                               └── parameters
 ```
 
-### Stage2: DyPRAG Training
+### Stage 2: DyPRAG Training
 ```
 python3 -u src/train_dyprag.py \
     --model_name=llama3-8b-instruct \
@@ -191,7 +210,7 @@ python3 -u src/train_dyprag.py \
 | `dyprag_train_epochs` | training epochs in stage 2 |
 
 The well-trained parameter translator $\mathcal{F}^\prime_\phi$ will be saved in `projector/f'{args.model_name}_hidden{args.projector_p}_sample{args.sample_rate}_lr{args.dyprag_learning_rate}` folder.
-### Stage3: DyPRAG Inference
+### Stage 3: DyPRAG Inference
 ```
 python3 src/inference_dyprag.py \
     --model_name=llama3-8b-instruct \
@@ -215,7 +234,7 @@ python3 src/inference_dyprag.py \
 | `inference_method` | `dyprag` or `dyprag_combine` |
 | `projector_p` | intermediate size of parameter translator |
 
-You can use similar command to inference RAGTruth.
+You can use similar command to inference RAGTruth with `--data_type="QA"`.
 
 #### RAGTruth Evaluation
 ```
@@ -224,6 +243,12 @@ python -u ./src/evaluate_ragtruth.py \
     --rag_path=rag_output_path \
     --output_path=output_path
 ```
+### How to implement DyPRAG with other LLMs
+1. Go to [transformers.models](https://github.com/huggingface/transformers/tree/main/src/transformers/models) to find the model you want to use.
+2. Copy `configuration_xxx.py` and `modeling_xxx.py` to the `models` folder and modify the import information in`modeling_xxx.py` similar to our [src/models/modeling_qwen2.py](src/models/modeling_qwen2.py)
+3. Modify forward function of MLP module in `modeling_xxx.py` similar to our [src/models/modeling_qwen2.py](src/models/modeling_qwen2.py) Line 57-69
+4. Add a new class in `get_model_class` function in [src/utils.py](src/utils.py) to load the new type of LLMs.
+
 
 ## Citation
 If you find our work useful in your research and would like to cite our project, please use the following citation:

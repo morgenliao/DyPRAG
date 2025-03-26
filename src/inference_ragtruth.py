@@ -5,8 +5,9 @@ import argparse
 import torch
 from tqdm import tqdm
 from peft import PeftModel
-from projector import ModuleProjector
+from projector import ParameterTranslator
 import prompt_template
+import random
 from root_dir_path import ROOT_DIR
 from utils import get_model, evaluate, load_ragtruth, read_complete, delta_inject, delta_remove
 from peft import LoraConfig, TaskType, get_peft_model
@@ -17,17 +18,19 @@ Question: {question}"""
 
 def predict(model, tokenizer, generation_config, question, passages = None):
     model.eval()
-    if passages is not None:
-        prompt = RAGTRUTH_PROMPT_W_PASSAGES.format(question=question, passages=passages)
-    else:
-        prompt = RAGTRUTH_PROMPT_W_OUT_PASSAGES.format(question=question)
-    input_ids = tokenizer.encode(prompt, return_tensors="pt").to(model.device)
-    input_len = len(input_ids[0])
-    input_ids = torch.tensor(input_ids).to(model.device)
+    prompt = RAGTRUTH_PROMPT_W_PASSAGES.format(question=question, passages=passages)
+    messages = [{
+        "role": "user",
+        "content": prompt,
+    }]
+    inputs = tokenizer.apply_chat_template(
+        messages, 
+        add_generation_prompt=True)
+    input_len = len(inputs)
+    input_ids = torch.tensor(inputs).to(model.device)
     with torch.no_grad():
         output = model.generate(
-            input_ids, 
-            attention_mask = torch.ones(input_ids.shape).to(model.device),
+            input_ids.unsqueeze(0), 
             **generation_config)
     output = output.sequences[0][input_len:]
     text = tokenizer.decode(output, skip_special_tokens=True)
@@ -35,6 +38,7 @@ def predict(model, tokenizer, generation_config, question, passages = None):
 
 def main(args):
     data_list = load_ragtruth(args.dataset, args.data_type)
+    
     # Random sample 100 data
     random.seed(42)
     idxs = random.sample(range(len(data_list)), 100)
@@ -74,8 +78,8 @@ def main(args):
         lora_dropout=0,
         )
         model = get_peft_model(model, peft_config)
-        projector_path = os.path.join(ROOT_DIR, "projector", args.projector_path, f"epoch_{args.inference_epoch}.pt")
-        projector = ModuleProjector(
+        projector_path = os.path.join(ROOT_DIR, "projector", args.projector_path, f"epoch_{args.inference_epoch-1}.pt")
+        projector = ParameterTranslator(
             ["down_proj", "up_proj", "gate_proj"],
             list(range(model.config.num_hidden_layers)),
             model.config.hidden_size,

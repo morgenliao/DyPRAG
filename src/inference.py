@@ -30,7 +30,7 @@ def main(args):
         f"rank={args.lora_rank}_alpha={args.lora_alpha}",
         args.dataset,
         f"lr={args.learning_rate}_epoch={args.num_train_epochs}_{cot_name}",
-        f"aug_model={args.augment_model}_projector",
+        f"aug_model={args.augment_model}",
     )
     output_root_dir = os.path.join(
         ROOT_DIR, 
@@ -50,7 +50,7 @@ def main(args):
         with open(os.path.join(output_dir, "config.json"), "w") as fout:
             json.dump(vars(args), fout, indent=4)
 
-        predict_file = os.path.join(output_dir, "predict_prag1.json")
+        predict_file = os.path.join(output_dir, "predict.json")
         ret, start_with = read_complete(predict_file)
         fulldata = fulldata[start_with:] if args.sample == -1 else fulldata[start_with:args.sample]
         for test_id, data in tqdm(enumerate(fulldata), total=len(fulldata)):
@@ -130,7 +130,7 @@ if __name__ == "__main__":
     parser.add_argument("--augment_model", type=str, default=None)  
     parser.add_argument("--num_train_epochs", type=int, required=True)
     parser.add_argument("--learning_rate", type=float, default=3e-4)
-    parser.add_argument("--inference_method", type=str, required=True, choices=["icl", "prag", "combine", "no_icl"])
+    parser.add_argument("--inference_method", type=str, required=True, choices=["icl", "prag", "prag_combine", "no_icl"])
     # LoRA
     parser.add_argument("--lora_rank", type=int)
     parser.add_argument("--lora_alpha", type=int)

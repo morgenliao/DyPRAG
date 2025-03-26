@@ -33,7 +33,7 @@ def main(args):
     if args.with_cot:
         prompt_template.get_fewshot(args.dataset)
 
-    projector_path = os.path.join(ROOT_DIR, "projector", args.projector_path, f"epoch_{args.inference_epoch}.pt")
+    projector_path = os.path.join(ROOT_DIR, "projector", args.projector_path, f"epoch_{args.inference_epoch-1}.pt")
     projector = ParameterTranslator(
         ["down_proj", "up_proj", "gate_proj"],
         list(range(model.config.num_hidden_layers)),

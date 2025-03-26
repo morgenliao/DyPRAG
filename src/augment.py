@@ -322,12 +322,13 @@ def main(args):
             output_dir, 
             filename if filename.endswith(".json") else filename + ".json"
         )
+        print(output_file)
         ret = []
         dataset = dataset[start_idx:start_idx+args.sample]
         pbar = tqdm(total = args.sample * args.topk)
         for data in dataset:
             print(f"question: {data['question']}")
-            if len(data['passages']) == 0:
+            if 'passages' not in data or len(data['passages']) == 0:
                 passages = bm25_retrieve(data["question"], topk=args.topk+10)
             else:
                 passages = data['passages']
@@ -350,10 +351,11 @@ def main(args):
                 print(f"{args.model_name}_qa: {val[f'{args.model_name}_qa']}")
                 final_passages.append(psg)
                 pbar.update(1)
-                if len(data["augment"]) == args.topk + 10:
+                if len(data["augment"]) == args.topk:
                     break
             data["passages"] = final_passages
             ret.append(data)
+            import pdb; pdb.set_trace()
             with open(output_file, "w") as fout:
                 json.dump(ret, fout, indent=4)
 

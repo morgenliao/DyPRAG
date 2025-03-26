@@ -186,20 +186,16 @@ class LlamaMLP(nn.Module):
         self.down_proj = nn.Linear(self.intermediate_size, self.hidden_size, bias=config.mlp_bias)
         self.act_fn = ACT2FN[config.hidden_act]
 
+    # Modified by DyPRAG
     def forward(self, x):
-        # 计算gate投影
         gate_output = self.gate_proj(x)
         if hasattr(self.gate_proj, "delta"):
             gate_output += torch.matmul(x, self.gate_proj.delta.T.to(x.device))
-        # 应用激活函数
         gate_activated = self.act_fn(gate_output)
-        # 计算up投影
         up_output = self.up_proj(x)
         if hasattr(self.up_proj, "delta"):
             up_output += torch.matmul(x, self.up_proj.delta.T.to(x.device))
-        # 计算gate和up的乘积
         gate_up_product = gate_activated * up_output
-        # 计算最终的down投影
         down_proj = self.down_proj(gate_up_product)
         if hasattr(self.down_proj, "delta"):
             down_proj += torch.matmul(gate_up_product, self.down_proj.delta.T.to(x.device))

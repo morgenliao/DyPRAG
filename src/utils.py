@@ -137,16 +137,13 @@ def load_data(data_name, data_type, model_name, projector=False, data_dir=None):
     
 
 def get_model_path(model_name):
-    if os.path.exists("/mnt/publiccache/huggingface"):
-        path = "/mnt/publiccache/huggingface"
-    else:
-        path = "/mnt/usercache/huggingface"
+    path = "" # Your local path to the model
     if model_name == "llama3-8b-instruct": 
-        return path + "/Meta-Llama-3-8B-Instruct"
+        return path + "Meta-Llama-3-8B-Instruct"
     elif model_name == "qwen2.5-1.5b-instruct":
-        return path + "/Qwen2.5-1.5B-Instruct"
+        return path + "Qwen2.5-1.5B-Instruct"
     elif model_name == "llama3.2-1b-instruct":
-        return path + "/Llama-3.2-1B-Instruct"
+        return path + "Llama-3.2-1B-Instruct"
     else:
         return model_name
 
