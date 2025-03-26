@@ -1,5 +1,5 @@
 # Dynamic Parametric Rretireval Augmented Generation
-
+Official implementation of "Better wit than wealth: Dynamic Parametric Retrieval Augmented Generation for Test-time Knowledge Enhancement" paper.
 ## Overview
 ![Overall Comparison](assets/intro.png)
 Overview of Dynamic Parametric RAG:
