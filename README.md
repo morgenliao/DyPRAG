@@ -1,4 +1,14 @@
 # Dynamic Parametric Rretireval Augmented Generation
+<p align="center" style="font-size:200%">
+    <img alt="GitHub" src="https://img.shields.io/github/license/Trae1ounG/DyPRAG.svg?color=blue&style=flat-square">
+    <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/Trae1ounG/DyPRAG">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Trae1ounG/DyPRAG">
+</p>
+
+<!-- <p align="center" style="font-size:200%"> -->
+<!-- 🔔 <a href="https://github.com/Xnhyacinth/TAGI" target="_self">Code</a> • 📃 <a href="https://arxiv.org/abs/2406.12382" target="_self">Paper</a> <br>  -->
+<p align="center"><font size=6>📜</font> <a target="_self" href=""> <img style="height:20pt" src="https://img.shields.io/badge/-Paper-red?style=flat&logo=arxiv"></a> <font size=6>•</font> <font size=6>🖥️</font> <a target="_self" href="https://github.com/Trae1ounG/DyPRAG"> <img style="height:20pt" src="https://img.shields.io/badge/-Code-pink?style=flat&logo=github"></a> <font size=6>•</font> <font size=6>🕸️</font> <a target="_self" href="https://trae1oung.github.io/DyPRAG/"> <img style="height:20pt" src="https://img.shields.io/badge/-🌐%20Homepage-blue?style=flat"></a></p>
+<!-- </p> -->
 Official implementation of "Better wit than wealth: Dynamic Parametric Retrieval Augmented Generation for Test-time Knowledge Enhancement" paper.
 ## Overview
 ![Overall Comparison](assets/intro.png)
