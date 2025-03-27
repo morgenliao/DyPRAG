@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+    <!-- Replace the content tag with appropriate information -->
+    <meta name="description" content="Better wit than wealth: Dynamic Parametric Retrieval Augmented Generation for Test-time Knowledge Enhancement ">
+    <!-- <meta property="og:title" content="SOCIAL MEDIA TITLE TAG"/>
+  <meta property="og:description" content="SOCIAL MEDIA DESCRIPTION TAG TAG"/>
+  <meta property="og:url" content="/IAG"/> -->
+    <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
+    <!-- <meta property="og:image" content="static/image/your_banner_image.png" />
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/> -->
+
+
+    <!-- <meta name="twitter:title" content="TWITTER BANNER TITLE META TAG">
+  <meta name="twitter:description" content="TWITTER BANNER DESCRIPTION META TAG"> -->
+    <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
+    <!-- <meta name="twitter:image" content="static/images/your_twitter_banner_image.png">
+  <meta name="twitter:card" content="summary_large_image"> -->
+    <!-- Keywords for your paper to be indexed by-->
+    <meta name="keywords" content="RAG, Hallucination, Test-time Knowledge Enhancement">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>TAGI</title>
+    <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+    <link rel="stylesheet" href="static/css/bulma.min.css">
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="static/css/index.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+    <script defer src="static/js/fontawesome.all.min.js"></script>
+    <script src="static/js/bulma-carousel.min.js"></script>
+    <script src="static/js/bulma-slider.min.js"></script>
+    <script src="static/js/index.js"></script>
+
+
+</head>
+
+<style>
+    .section {
+        margin-bottom: -30px;
+        /* Adjust this value as needed to reduce the space */
+    }
+    
+    .expandable-card .card-text-container {
+        max-height: 200px;
+        overflow-y: hidden;
+        position: relative;
+    }
+    
+    .expandable-card.expanded .card-text-container {
+        max-height: none;
+    }
+    
+    .expand-btn {
+        position: relative;
+        display: none;
+        background-color: rgba(255, 255, 255, 0.8);
+        /* margin-top: -20px; */
+        /* justify-content: center; */
+        color: #510c75;
+        border-color: transparent;
+    }
+    
+    .expand-btn:hover {
+        background-color: rgba(200, 200, 200, 0.8);
+        text-decoration: none;
+        border-color: transparent;
+        color: #510c75;
+    }
+    
+    .expand-btn:focus {
+        outline: none;
+        text-decoration: none;
+    }
+    
+    .expandable-card:not(.expanded) .card-text-container:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 90px;
+        background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 1));
+    }
+    
+    .expandable-card:not(.expanded) .expand-btn {
+        margin-top: -40px;
+    }
+    
+    .card-body {
+        padding-bottom: 5px;
+    }
+    
+    .vertical-flex-layout {
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .figure-img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .adjustable-font-size {
+        font-size: calc(0.5rem + 2vw);
+    }
+    
+    .chat-history {
+        flex-grow: 1;
+        overflow-y: auto;
+        /* overflow-x: hidden; */
+        padding: 5px;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+    
+    #gradio pre {
+        background-color: transparent;
+    }
+    /* 使用渐变颜色实现彩虹字体 */
+    
+    .rainbow-text {
+        background: linear-gradient(to right, #3498db, #fe82cf);
+        -webkit-background-clip: text;
+        color: transparent;
+        display: inline-block;
+        font-weight: bold;
+    }
+</style>
+
+<body>
+
+
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <h1 class="title is-2 publication-title"><span class="rainbow-text">Better wit than wealth: Dynamic Parametric Retrieval Augmented Generation for Test-time Knowledge Enhancement </span></h1>
+                        <div class="is-size-5 publication-authors">
+                            <!-- Paper authors -->
+                            <span class="author-block">
+                <a href="https://trae1oung.github.io/" target="_self">Yuqiao Tan</a><sup>1,2</sup>,</span>
+                            <span class="author-block">
+                <a href="https://nlpr.ia.ac.cn/cip/shizhuhe/" target="_self">Shizhu
+                  He</a><sup>&dagger;1,2</sup>,</span>
+                            <span class="author-block">
+                <a href="https://xnhyacinth.github.io/" target="_self">Huanxuan Liao</a><sup>1,2</sup>,</span>
+                            <span class="author-block">
+                <a href="https://nlpr.ia.ac.cn/cip/~liukang/index.html" target="_self">Kang Liu</a><sup>1,2</sup>
+
+                <a href="" target="_self">Jun Zhao</a><sup>1,2</sup>
+              </span>
+                        </div>
+
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block"><sup>1</sup>The Laboratory of Cognition and Decision Intelligence for Complex
+                Systems, Institute of Automation, Chinese Academy of Sciences, Beijing, China</span>
+                            <span class="author-block"><sup>2</sup>School of Artificial Intelligence, University of Chinese Academy of
+                Sciences, Beijing, China</span>
+                            <!-- <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span> -->
+                        </div>
+
+                        <div class="is-size-6 publication-authors">
+                            <span class="author-block"><sup>&dagger;</sup>Corresponding Author</span>
+                        </div>
+
+                        <div class="column has-text-centered">
+                            <div class="publication-links">
+
+                                <!-- ArXiv abstract Link -->
+                                <span class="link-block">
+                  <a href="https://arxiv.org/" target="_self"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                                <span>ArXiv</span>
+                                </a>
+                                </span>
+
+                                <!-- Arxiv PDF link -->
+                                <span class="link-block">
+                  <a href="https://arxiv.org/" target="_self"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                                <span>Paper</span>
+                                </a>
+                                </span>
+
+                                <!-- Supplementary PDF link -->
+                                <!-- <span class="link-block">
+                  <a href="static/pdfs/TAGI.pdf" target="_self"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span> -->
+
+                                <!-- Github link -->
+                                <span class="link-block">
+                  <a href="https://github.com/Trae1ounG/DyPRAG" target="_self"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                                <span>Code</span>
+                                </a>
+                                </span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Teaser video-->
+    <!-- <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <video poster="" id="tree" autoplay controls muted loop height="100%">
+          Your video here
+          <source src="static/videos/banner_video.mp4" type="video/mp4">
+        </video>
+        <h2 class="subtitle has-text-centered">
+          Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat
+          pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus.
+        </h2>
+      </div>
+    </div>
+  </section> -->
+    <!-- End teaser video -->
+
+    <!-- Paper abstract -->
+    <section class="section hero is-light">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <h2 class="title is-3">Abstract</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            Retrieval-augmented generation (RAG) enhances large language models (LLMs) by retrieving relevant documents from external sources and incorporating them into the context. While it improves reliability by providing factual texts, it significantly increases
+                            inference costs as context length grows and introduces challenging issue of RAG hallucination, primarily caused by the lack of corresponding parametric knowledge in LLMs. An efficient solution to this problem is to enhance
+                            the knowledge of LLMs at test-time. Parametric RAG (PRAG) addresses this by embedding document knowledge into LLM parameters through offline training, effectively reducing inference costs. However, its high training and storage
+                            costs, along with limited generalization ability, significant restrict it practical adoption. To address these challenges, we propose \textbf{Dynamic Parametric RAG (DyPRAG)}, a novel framework that utilizes a lightweight parameter
+                            translator model to efficiently map documents into parametric knowledge by modeling the underlying function from documents to parameters, reducing inference, training and storage costs while enhancing LLMs knowledge in a plug-and-play
+                            manner at test-time. Extensive experiments on multiple datasets demonstrate the effectiveness and generalization of DyPRAG. Notably, DyPRAG dynamically generates parameteric knowledge to resolve conflicts between contextual
+                            and parametric knowledge, offering a practical solution to mitigate RAG hallucination in real-world applications.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- End paper abstract -->
+
+
+    <!-- Image carousel -->
+
+    <!-- End image carousel -->
+
+
+
+
+    <!-- Youtube video -->
+
+    <!-- End youtube video -->
+
+
+    <!-- Video carousel -->
+
+    <!-- End video carousel -->
+
+
+    <section class="section" id="DyPRAG Overview">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-six-fifths">
+                    <h2 class="title is-3"> <span class="rainbow-text">DyPRAG</span> Overview</h2>
+                </div>
+            </div>
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column is-full-width">
+                        <div class="content has-text-justified">
+                            <p>
+                                Workflow illustration of standard RAG, PRAG, and our proposed DyPRAG . DyPRAG significantly reduces costs by employing a lightweight parameter translator.
+                                <centering>
+                                    <div style="text-align: center;">
+                                        <img id="pipeline" width="100%" src="static/images/intro_left.png">
+                                    </div>
+                            </p>
+                        </div>
+                        </b>
+                        </font>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <section class="section" id="DyPRAG Pipeline">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-six-fifths">
+                    <h2 class="title is-3"> <span class="rainbow-text">TAGI</span> Model</h2>
+                </div>
+            </div>
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column is-full-width">
+                        <div class="content has-text-justified">
+                            <p>
+                                An illustration of the DyPRAG method. In the offline phase, Stage 1 follows the same parameterization process as PRAG to collect Doc-Param pairs. In Stage 2, we train the parameter projector to learn the mapping function from documents to parameters.
+                                During the online Stage 3, the trained parameter translator dynamically generates LoRA modules, enabling LLMs to enhance their knowledge at test-time.
+                                <centering>
+                                    <div style="text-align: center;">
+                                        <img id="pipeline" width="100%" src="static/images/method.png">
+                                    </div>
+                            </p>
+                        </div>
+                        </b>
+                        </font>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <section class="section" id="DyPRAG Costs Comparison">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-six-fifths">
+                    <h2 class="title is-3"> <span class="rainbow-text">DyPRAG</span> Comparison with RAG and PRAG</h2>
+                </div>
+            </div>
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column is-full-width">
+                        <div class="content has-text-justified">
+                            <p>
+                                A five-dimensional comparison of the three methods highlights in cost and ability.
+                                <centering>
+                                    <div style="text-align: center;">
+                                        <img id="pipeline" width="100%" src="static/images/intro_right.png">
+                                    </div>
+                            </p>
+                        </div>
+                        </b>
+                        </font>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <section class="section" id="DyPRAG Evaluation">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-six-fifths">
+                    <h2 class="title is-3"> <span class="rainbow-text">TAGI</span> Evaluation</h2>
+                </div>
+            </div>
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column is-full-width">
+                        <div class="content has-text-justified">
+                            <p>
+                                Results of our main experiment of DyPRAG.
+                                <centering>
+                                    <div style="text-align: center;">
+                                        <img id="pipeline" width="100%" src="static/images/experiment.png">
+                                    </div>
+                            </p>
+
+                            <p>
+                                Comparison between DyPRAG-Combine vs standard RAG judged by GPT-4o.
+                                <centering>
+                                    <div style="text-align: center;">
+                                        <img id="pipeline" width="100%" src="static/images/ragtruth_comparison.png">
+                                    </div>
+                            </p>
+
+                            <p>
+                                Case study about contextual and parametric knowledge conflict in 2WQA (Bridge sub-task).
+                                <centering>
+                                    <div style="text-align: left;">
+                                        <img id="pipeline" width="50%" src="static/images/case1.png">
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <img id="pipeline" width="50%" src="static/images/case2.png">
+                                    </div>
+                            </p>
+                        </div>
+                        </b>
+                        </font>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <!-- Paper poster -->
+    <!--End paper poster -->
+
+
+    <!--BibTex citation -->
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+            <h2 class="title">BibTeX</h2>
+            <pre><code>@article{
+      }</code></pre>
+        </div>
+    </section>
+    <!--End BibTex citation -->
+
+
+    <footer class="footer">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <div class="content">
+
+                        <p>
+                            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_self">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_self">Nerfies</a> project
+                            page. You are free to borrow the of this website, we just ask that you link back to this page in the footer.
+                            <br> This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_self">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Statcounter tracking code -->
+
+    <!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+</body>
+
+</html>
