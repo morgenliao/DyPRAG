@@ -12,6 +12,7 @@
 <p align="center"><font size=6>📜</font> <a target="_self" href=""> <img style="height:20pt" src="https://img.shields.io/badge/-Paper-red?style=flat&logo=arxiv"></a> <font size=6>•</font> <font size=6>🖥️</font> <a target="_self" href="https://github.com/Trae1ounG/DyPRAG"> <img style="height:20pt" src="https://img.shields.io/badge/-Code-pink?style=flat&logo=github"></a> <font size=6>•</font> <font size=6>🕸️</font> <a target="_self" href="https://trae1oung.github.io/DyPRAG/"> <img style="height:20pt" src="https://img.shields.io/badge/-🌐%20Homepage-blue?style=flat"></a></p>
 <!-- </p> -->
 Official implementation of "Better wit than wealth: Dynamic Parametric Retrieval Augmented Generation for Test-time Knowledge Enhancement" paper.
+
 ## Overview
 ![Overall Comparison](assets/intro.png)
 Overview of Dynamic Parametric RAG:
