@@ -1,5 +1,6 @@
-# Dynamic Parametric Rretireval Augmented Generation
+# <img src="./assets/emoji.png" width="20"> Dynamic Parametric RAG
 <p align="center" style="font-size:200%">
+    <img alt="GitHub" src="https://img.shields.io/github/license/Trae1ounG/DyPRAG.svg?color=blue&style=flat-square">
     <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/Trae1ounG/DyPRAG">
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Trae1ounG/DyPRAG">
 </p>
