@@ -12,7 +12,7 @@
 <!-- 🔔 <a href="https://github.com/Xnhyacinth/TAGI" target="_self">Code</a> • 📃 <a href="https://arxiv.org/abs/2406.12382" target="_self">Paper</a> <br>  -->
 <p align="center"><font size=6>📜</font> <a target="_self" href=""> <img style="height:20pt" src="https://img.shields.io/badge/-Paper-red?style=flat&logo=arxiv"></a> <font size=6>•</font> <font size=6>🖥️</font> <a target="_self" href="https://github.com/Trae1ounG/DyPRAG"> <img style="height:20pt" src="https://img.shields.io/badge/-Code-pink?style=flat&logo=github"></a> <font size=6>•</font> <font size=6>🕸️</font> <a target="_self" href="https://trae1oung.github.io/DyPRAG/"> <img style="height:20pt" src="https://img.shields.io/badge/-🌐%20Homepage-blue?style=flat"></a></p>
 <!-- </p> -->
-Official implementation of "Better wit than wealth: Dynamic Parametric Retrieval Augmented Generation for Test-time Knowledge Enhancement" paper. 
+Official implementation of **"Better wit than wealth: Dynamic Parametric Retrieval Augmented Generation for Test-time Knowledge Enhancement"** paper. 
 
 ## Overview
 ![Overall Comparison](assets/intro.png)
@@ -75,6 +75,7 @@ cd ../..
 python prep_elastic.py --data_path data/dpr/psgs_w100.tsv --index_name wiki  # build index
 ```
 **Prepare dataset**
+
 For 2WikiMultihopQA:
 
 Download the [2WikiMultihopQA](https://www.dropbox.com/s/ms2m13252h6xubs/data_ids_april7.zip?e=1) dataset from its repository https://www.dropbox.com/s/ms2m13252h6xubs/data_ids_april7.zip?e=1. Unzip it and move the folder to data/2wikimultihopqa.
