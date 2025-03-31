@@ -146,6 +146,8 @@ python src/augment.py \
 | `topk` | retrieval number |
 | `output_dir` | folder to save the augmented data |
 | `projector` | whether to use projector |
+
+
 The results of data augmentation will be stored in the file `{output_dir}/{dataset}/{data_type}.json`. To reproduce PRAG, you should set `output_dir` to `data_aug` and without `projector`.
 
 
