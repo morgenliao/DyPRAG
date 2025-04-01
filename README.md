@@ -6,7 +6,7 @@
 </p>
 
 <div  align="center">  
-<img src="assets/github.png" width="25%"> 
+<img src="assets/github_new.jpg" width="40%"> 
 </div>
 <!-- <p align="center" style="font-size:200%"> -->
 <!-- 🔔 <a href="https://github.com/Xnhyacinth/TAGI" target="_self">Code</a> • 📃 <a href="https://arxiv.org/abs/2406.12382" target="_self">Paper</a> <br>  -->
