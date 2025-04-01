@@ -282,3 +282,7 @@ If you find our work useful in your research and would like to cite our project,
       url={https://arxiv.org/abs/2503.23895}, 
 }
 ```
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Trae1ounG/DyPRAG&type=Date)](https://star-history.com/#Trae1ounG/DyPRAG&Date)
