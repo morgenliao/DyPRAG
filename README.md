@@ -14,7 +14,7 @@
 <img src="assets/github_new.jpg" width="40%"> 
 </div>
 <!-- </p> -->
-Official implementation of "Better wit than wealth: Dynamic Parametric Retrieval Augmented Generation for Test-time Knowledge Enhancement" paper. 
+Official implementation of "[Better wit than wealth: Dynamic Parametric Retrieval Augmented Generation for Test-time Knowledge Enhancement](https://arxiv.org/abs/2503.23895)" paper. 
 
 ## Overview
 ![Overall Comparison](assets/intro.png)
