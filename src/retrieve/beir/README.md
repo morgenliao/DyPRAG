@@ -46,49 +46,49 @@
     <a href="https://huggingface.co/"><img style="float: middle; padding: 2px 7px 2px 7px;" width="400" height="80" src="./images/HF.png" /></a>
 </h3>
 
-## :beers: What is it?
+## :beers: 这是什么?
 
-**BEIR** is a **heterogeneous benchmark** containing diverse IR tasks. It also provides a **common and easy framework** for evaluation of your NLP-based retrieval models within the benchmark.
+**BEIR** 是一个**异构基准**,包含多样化的信息检索任务。它还为在基准测试中评估基于NLP的检索模型提供了一个**通用且简单的框架**。
 
-For **an overview**, checkout our **new wiki** page: [https://github.com/beir-cellar/beir/wiki](https://github.com/beir-cellar/beir/wiki).
+要**概览**,请查看我们的**新wiki**页面: [https://github.com/beir-cellar/beir/wiki](https://github.com/beir-cellar/beir/wiki)。
 
-For **models and datasets**, checkout out **Hugging Face (HF)** page: [https://huggingface.co/BeIR](https://huggingface.co/BeIR).
+要了解**模型和数据集**,请查看我们的**Hugging Face (HF)**页面: [https://huggingface.co/BeIR](https://huggingface.co/BeIR)。
 
-For **Leaderboard**, checkout out **Eval AI** page: [https://eval.ai/web/challenges/challenge-page/1897](https://eval.ai/web/challenges/challenge-page/1897).
+要了解**排行榜**,请查看**Eval AI**页面: [https://eval.ai/web/challenges/challenge-page/1897](https://eval.ai/web/challenges/challenge-page/1897)。
 
-For more information, checkout out our publications:
+要了解更多信息,请查看我们的出版物:
 
-- [BEIR: A Heterogenous Benchmark for Zero-shot Evaluation of Information Retrieval Models](https://openreview.net/forum?id=wCu6T5xFjeJ) (NeurIPS 2021, Datasets and Benchmarks Track)
-- [Resources for Brewing BEIR: Reproducible Reference Models and an Official Leaderboard](https://arxiv.org/abs/2306.07471) (Arxiv 2023)
+- [BEIR: 用于信息检索模型零样本评估的异构基准](https://openreview.net/forum?id=wCu6T5xFjeJ) (NeurIPS 2021, 数据集与基准测试赛道)
+- [酿造BEIR的资源：可复现的参考模型与官方排行榜](https://arxiv.org/abs/2306.07471) (Arxiv 2023)
 
-## :beers: Installation
+## :beers: 安装
 
-Install via pip:
+通过pip安装：
 
 ```python
 pip install beir
 ```
 
-If you want to build from source, use:
+如果你想从源代码构建，请使用：
 
-```python
-$ git clone https://github.com/beir-cellar/beir.git
-$ cd beir
-$ pip install -e .
+```shell
+git clone https://github.com/beir-cellar/beir.git
+cd beir
+pip install -e .
 ```
 
-Tested with python versions 3.6 and 3.7
+已在Python 3.6和3.7版本上测试通过
 
-## :beers: Features 
+## :beers: 特点
 
-- Preprocess your own IR dataset or use one of the already-preprocessed 17 benchmark datasets
-- Wide settings included, covers diverse benchmarks useful for both academia and industry
-- Includes well-known retrieval architectures (lexical, dense, sparse and reranking-based)
-- Add and evaluate your own model in a easy framework using different state-of-the-art evaluation metrics
+- 预处理您自己的信息检索数据集或使用已经预处理好的17个基准数据集
+- 包含广泛的设置，涵盖对学术界和工业界都有用的多样化基准
+- 集成多种知名检索架构（词法、稠密、稀疏和重排序）
+- 在一个便捷的框架中使用不同的最先进评估指标添加和评估您自己的模型
 
-## :beers: Quick Example
+## :beers: 快速示例
 
-For other example codes, please refer to our **[Examples and Tutorials](https://github.com/beir-cellar/beir/wiki/Examples-and-tutorials)** Wiki page. 
+有关其他示例代码，请参考我们的**[示例和教程](https://github.com/beir-cellar/beir/wiki/Examples-and-tutorials)**Wiki页面。
 
 ```python
 from beir import util, LoggingHandler
@@ -100,102 +100,100 @@ from beir.retrieval.search.dense import DenseRetrievalExactSearch as DRES
 import logging
 import pathlib, os
 
-#### Just some code to print debug information to stdout
+#### 仅用于打印调试信息到标准输出的代码
 logging.basicConfig(format='%(asctime)s - %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO,
                     handlers=[LoggingHandler()])
-#### /print debug information to stdout
+#### /打印调试信息到标准输出
 
-#### Download scifact.zip dataset and unzip the dataset
+#### 下载scifact.zip数据集并解压缩数据集
 dataset = "scifact"
 url = "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/{}.zip".format(dataset)
 out_dir = os.path.join(pathlib.Path(__file__).parent.absolute(), "datasets")
 data_path = util.download_and_unzip(url, out_dir)
 
-#### Provide the data_path where scifact has been downloaded and unzipped
+#### 提供scifact下载并解压缩后的data_path
 corpus, queries, qrels = GenericDataLoader(data_folder=data_path).load(split="test")
 
-#### Load the SBERT model and retrieve using cosine-similarity
+#### 加载SBERT模型并使用余弦相似度进行检索
 model = DRES(models.SentenceBERT("msmarco-distilbert-base-tas-b"), batch_size=16)
-retriever = EvaluateRetrieval(model, score_function="dot") # or "cos_sim" for cosine similarity
+retriever = EvaluateRetrieval(model, score_function="dot") # 或 "cos_sim" 表示余弦相似度
 results = retriever.retrieve(corpus, queries)
 
-#### Evaluate your model with NDCG@k, MAP@K, Recall@K and Precision@K  where k = [1,3,5,10,100,1000] 
+#### 使用NDCG@k, MAP@K, Recall@K 和 Precision@K 评估您的模型，其中k = [1,3,5,10,100,1000]
 ndcg, _map, recall, precision = retriever.evaluate(qrels, results, retriever.k_values)
 ```
 
-## :beers: Available Datasets
+## :beers: 可用数据集
 
-Command to generate md5hash using Terminal:  ``md5sum filename.zip``.
+使用终端生成md5hash的命令：`md5sum filename.zip`。
 
-You can view all datasets available **[here](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/)** or on **[Hugging Face](https://huggingface.co/BeIR)**.
+您可以在**[这里](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/)**或**[Hugging Face](https://huggingface.co/BeIR)**查看所有可用的数据集。
 
+| 数据集       | 网站                                                                                  | BEIR-名称          | 公开? | 类型                       | 查询 | 语料库 | 相关 D/Q |                                            下载链接                                            |                                               md5                                               |
+| ------------- | ---------------------------------------------------------------------------------------- | ------------------ | ------- | -------------------------- | ------- | ------ | ------- | :---------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: |
+| MSMARCO       | [主页](https://microsoft.github.io/msmarco/)                                         | `msmarco`          | ✅      | `train`<br>`dev`<br>`test` | 6,980   | 8.84M  | 1.1     |     [链接](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/msmarco.zip)      |                               `444067daf65d982533ea17ebd59501e4`                                |
+| TREC-COVID    | [主页](https://ir.nist.gov/covidSubmit/index.html)                                   | `trec-covid`       | ✅      | `test`                     | 50      | 171K   | 493.5   |    [链接](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/trec-covid.zip)    |                               `ce62140cb23feb9becf6270d0d1fe6d1`                                |
+| NFCorpus      | [主页](https://www.cl.uni-heidelberg.de/statnlpgroup/nfcorpus/)                      | `nfcorpus`         | ✅      | `train`<br>`dev`<br>`test` | 323     | 3.6K   | 38.2    |     [链接](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/nfcorpus.zip)     |                               `a89dba18a62ef92f7d323ec890a0d38d`                                |
+| BioASQ        | [主页](http://bioasq.org)                                                            | `bioasq`           | ❌      | `train`<br>`test`          | 500     | 14.91M | 4.7     |                                               无                                                |  [如何复现?](https://github.com/beir-cellar/beir/blob/main/examples/dataset#2-bioasq)   |
+| NQ            | [主页](https://ai.google.com/research/NaturalQuestions)                              | `nq`               | ✅      | `train`<br>`test`          | 3,452   | 2.68M  | 1.2     |        [链接](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/nq.zip)        |                               `d4d3d2e48787a744b6f6e691ff534307`                                |
+| HotpotQA      | [主页](https://hotpotqa.github.io)                                                   | `hotpotqa`         | ✅      | `train`<br>`dev`<br>`test` | 7,405   | 5.23M  | 2.0     |     [链接](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/hotpotqa.zip)     |                               `f412724f78b0d91183a0e86805e16114`                                |
+| FiQA-2018     | [主页](https://sites.google.com/view/fiqa/)                                          | `fiqa`             | ✅      | `train`<br>`dev`<br>`test` | 648     | 57K    | 2.6     |       [链接](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/fiqa.zip)       |                               `17918ed23cd04fb15047f73e6c3bd9d9`                                |
+| Signal-1M(RT) | [主页](https://research.signal-ai.com/datasets/signal1m-tweetir.html)                | `signal1m`         | ❌      | `test`                     | 97      | 2.86M  | 19.6    |                                               无                                                | [如何复现?](https://github.com/beir-cellar/beir/blob/main/examples/dataset#4-signal-1m) |
+| TREC-NEWS     | [主页](https://trec.nist.gov/data/news2019.html)                                     | `trec-news`        | ❌      | `test`                     | 57      | 595K   | 19.6    |                                               无                                                | [如何复现?](https://github.com/beir-cellar/beir/blob/main/examples/dataset#1-trec-news) |
+| Robust04      | [主页](https://trec.nist.gov/data/robust/04.guidelines.html)                         | `robust04`         | ❌      | `test`                     | 249     | 528K   | 69.9    |                                               无                                                | [如何复现?](https://github.com/beir-cellar/beir/blob/main/examples/dataset#3-robust04)  |
+| ArguAna       | [主页](http://argumentation.bplaced.net/arguana/data)                                | `arguana`          | ✅      | `test`                     | 1,406   | 8.67K  | 1.0     |     [链接](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/arguana.zip)      |                               `8ad3e3c2a5867cdced806d6503f29b99`                                |
+| Touche-2020   | [主页](https://webis.de/events/touche-20/shared-task-1.html)                         | `webis-touche2020` | ✅      | `test`                     | 49      | 382K   | 19.0    | [链接](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/webis-touche2020.zip) |                               `46f650ba5a527fc69e0a6521c5a23563`                                |
+| CQADupstack   | [主页](http://nlp.cis.unimelb.edu.au/resources/cqadupstack/)                         | `cqadupstack`      | ✅      | `test`                     | 13,145  | 457K   | 1.4     |   [链接](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/cqadupstack.zip)    |                               `4e41456d7df8ee7760a7f866133bda78`                                |
+| Quora         | [主页](https://www.quora.com/q/quoradata/First-Quora-Dataset-Release-Question-Pairs) | `quora`            | ✅      | `dev`<br>`test`            | 10,000  | 523K   | 1.6     |      [链接](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/quora.zip)       |                               `18fb154900ba42a600f84b839c173167`                                |
+| DBPedia       | [主页](https://github.com/iai-group/DBpedia-Entity/)                                 | `dbpedia-entity`   | ✅      | `dev`<br>`test`            | 400     | 4.63M  | 38.2    |  [链接](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/dbpedia-entity.zip)  |                               `c2a39eb420a3164af735795df012ac2c`                                |
+| SCIDOCS       | [主页](https://allenai.org/data/scidocs)                                             | `scidocs`          | ✅      | `test`                     | 1,000   | 25K    | 4.9     |     [链接](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/scidocs.zip)      |                               `38121350fc3a4d2f48850f6aff52e4a9`                                |
+| FEVER         | [主页](http://fever.ai)                                                              | `fever`            | ✅      | `train`<br>`dev`<br>`test` | 6,666   | 5.42M  | 1.2     |      [链接](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/fever.zip)       |                               `5a818580227bfb4b35bb6fa46d9b6c03`                                |
+| Climate-FEVER | [主页](http://climatefever.ai)                                                       | `climate-fever`    | ✅      | `test`                     | 1,535   | 5.42M  | 3.0     |  [链接](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/climate-fever.zip)   |                               `8b66f0a9126c521bae2bde127b4dc99d`                                |
+| SciFact       | [主页](https://github.com/allenai/scifact)                                           | `scifact`          | ✅      | `train`<br>`test`          | 300     | 5K     | 1.1     |     [链接](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/scifact.zip)      |                               `5f7d1de60b170fc8027bb7898e2efca1`                                |
 
-| Dataset   | Website| BEIR-Name | Public? | Type | Queries  | Corpus | Rel D/Q | Down-load | md5 |
-| -------- | -----| ---------| ------- | --------- | ----------- | ---------| ---------| :----------: | :------:|
-| MSMARCO    | [Homepage](https://microsoft.github.io/msmarco/)| ``msmarco`` | ✅ | ``train``<br>``dev``<br>``test``|  6,980   |  8.84M     |    1.1 | [Link](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/msmarco.zip) | ``444067daf65d982533ea17ebd59501e4`` |
-| TREC-COVID |  [Homepage](https://ir.nist.gov/covidSubmit/index.html)| ``trec-covid``| ✅ | ``test``| 50|  171K| 493.5 | [Link](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/trec-covid.zip) | ``ce62140cb23feb9becf6270d0d1fe6d1`` |
-| NFCorpus   | [Homepage](https://www.cl.uni-heidelberg.de/statnlpgroup/nfcorpus/) | ``nfcorpus`` | ✅ |``train``<br>``dev``<br>``test``|  323     |  3.6K     |  38.2 | [Link](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/nfcorpus.zip) | ``a89dba18a62ef92f7d323ec890a0d38d`` |
-| BioASQ     | [Homepage](http://bioasq.org) | ``bioasq``| ❌ | ``train``<br>``test`` | 500 |  14.91M    |  4.7 | No | [How to Reproduce?](https://github.com/beir-cellar/beir/blob/main/examples/dataset#2-bioasq) |
-| NQ         | [Homepage](https://ai.google.com/research/NaturalQuestions) | ``nq``| ✅ | ``train``<br>``test``| 3,452   |  2.68M  |  1.2 | [Link](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/nq.zip) | ``d4d3d2e48787a744b6f6e691ff534307`` |
-| HotpotQA   | [Homepage](https://hotpotqa.github.io) | ``hotpotqa``| ✅ |``train``<br>``dev``<br>``test``|  7,405   |  5.23M  |  2.0 | [Link](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/hotpotqa.zip)  | ``f412724f78b0d91183a0e86805e16114`` |
-| FiQA-2018  | [Homepage](https://sites.google.com/view/fiqa/) | ``fiqa`` | ✅ | ``train``<br>``dev``<br>``test``|  648     |  57K    |  2.6 | [Link](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/fiqa.zip)  | ``17918ed23cd04fb15047f73e6c3bd9d9`` |
-| Signal-1M(RT) | [Homepage](https://research.signal-ai.com/datasets/signal1m-tweetir.html)| ``signal1m`` | ❌ | ``test``| 97   |  2.86M  |  19.6 | No | [How to Reproduce?](https://github.com/beir-cellar/beir/blob/main/examples/dataset#4-signal-1m) |
-| TREC-NEWS  | [Homepage](https://trec.nist.gov/data/news2019.html) | ``trec-news`` | ❌ | ``test``| 57    |  595K    |  19.6 | No | [How to Reproduce?](https://github.com/beir-cellar/beir/blob/main/examples/dataset#1-trec-news) |
-| Robust04 | [Homepage](https://trec.nist.gov/data/robust/04.guidelines.html) | ``robust04``| ❌ | ``test``| 249  |  528K  |  69.9 |  No  |  [How to Reproduce?](https://github.com/beir-cellar/beir/blob/main/examples/dataset#3-robust04)  |
-| ArguAna    | [Homepage](http://argumentation.bplaced.net/arguana/data) | ``arguana``| ✅ |``test`` | 1,406     |  8.67K    |  1.0 | [Link](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/arguana.zip)  | ``8ad3e3c2a5867cdced806d6503f29b99`` |
-| Touche-2020| [Homepage](https://webis.de/events/touche-20/shared-task-1.html) | ``webis-touche2020``| ✅ | ``test``| 49     |  382K    |  19.0 |  [Link](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/webis-touche2020.zip) | ``46f650ba5a527fc69e0a6521c5a23563`` |
-| CQADupstack| [Homepage](http://nlp.cis.unimelb.edu.au/resources/cqadupstack/) | ``cqadupstack``| ✅ | ``test``| 13,145 |  457K  |  1.4 |  [Link](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/cqadupstack.zip) | ``4e41456d7df8ee7760a7f866133bda78`` |
-| Quora| [Homepage](https://www.quora.com/q/quoradata/First-Quora-Dataset-Release-Question-Pairs) | ``quora``| ✅ | ``dev``<br>``test``| 10,000     |  523K    |  1.6 |  [Link](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/quora.zip) | ``18fb154900ba42a600f84b839c173167`` |
-| DBPedia | [Homepage](https://github.com/iai-group/DBpedia-Entity/) | ``dbpedia-entity``| ✅ | ``dev``<br>``test``| 400    |  4.63M    |  38.2 | [Link](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/dbpedia-entity.zip) | ``c2a39eb420a3164af735795df012ac2c`` |
-| SCIDOCS| [Homepage](https://allenai.org/data/scidocs) | ``scidocs``| ✅ | ``test``| 1,000     |  25K    |  4.9 |  [Link](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/scidocs.zip) | ``38121350fc3a4d2f48850f6aff52e4a9`` |
-| FEVER | [Homepage](http://fever.ai) | ``fever``| ✅ | ``train``<br>``dev``<br>``test``|  6,666     |  5.42M    |  1.2|  [Link](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/fever.zip)  | ``5a818580227bfb4b35bb6fa46d9b6c03`` |
-| Climate-FEVER| [Homepage](http://climatefever.ai) | ``climate-fever``| ✅ |``test``|  1,535     |  5.42M |  3.0 |  [Link](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/climate-fever.zip)  | ``8b66f0a9126c521bae2bde127b4dc99d`` |
-| SciFact| [Homepage](https://github.com/allenai/scifact) | ``scifact``| ✅ | ``train``<br>``test``|  300     |  5K    |  1.1 |  [Link](https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/scifact.zip)  | ``5f7d1de60b170fc8027bb7898e2efca1`` |
+## :beers: 其他信息
 
+我们还在我们的**[Wiki](https://github.com/beir-cellar/beir/wiki)**页面提供了各种其他信息。
+请参考以下页面：
 
-## :beers: Additional Information
+### 快速开始
 
-We also provide a variety of additional information in our **[Wiki](https://github.com/beir-cellar/beir/wiki)** page. 
-Please refer to these pages for the following:
+- [安装BEIR](https://github.com/beir-cellar/beir/wiki/Installing-beir)
+- [示例和教程](https://github.com/beir-cellar/beir/wiki/Examples-and-tutorials)
 
+### 数据集
 
-### Quick Start
+- [可用数据集](https://github.com/beir-cellar/beir/wiki/Datasets-available)
+- [多语言数据集](https://github.com/beir-cellar/beir/wiki/Multilingual-datasets)
+- [加载自定义数据集](https://github.com/beir-cellar/beir/wiki/Load-your-custom-dataset)
 
-- [Installing BEIR](https://github.com/beir-cellar/beir/wiki/Installing-beir)
-- [Examples and Tutorials](https://github.com/beir-cellar/beir/wiki/Examples-and-tutorials)
+### 模型
 
-### Datasets
+- [可用模型](https://github.com/beir-cellar/beir/wiki/Models-available)
+- [评估自定义模型](https://github.com/beir-cellar/beir/wiki/Evaluate-your-custom-model)
 
-- [Datasets Available](https://github.com/beir-cellar/beir/wiki/Datasets-available)
-- [Multilingual Datasets](https://github.com/beir-cellar/beir/wiki/Multilingual-datasets)
-- [Load your Custom Dataset](https://github.com/beir-cellar/beir/wiki/Load-your-custom-dataset)
+### 评估指标
 
-### Models 
-- [Models Available](https://github.com/beir-cellar/beir/wiki/Models-available)
-- [Evaluate your Custom Model](https://github.com/beir-cellar/beir/wiki/Evaluate-your-custom-model)
+- [可用评估指标](https://github.com/beir-cellar/beir/wiki/Metrics-available)
 
-### Metrics
+### 其他
 
-- [Metrics Available](https://github.com/beir-cellar/beir/wiki/Metrics-available)
+- [BEIR排行榜](https://github.com/beir-cellar/beir/wiki/Leaderboard)
+- [信息检索课程材料](https://github.com/beir-cellar/beir/wiki/Course-material-on-ir)
 
-### Miscellaneous
+## :beers: 免责声明
 
-- [BEIR Leaderboard](https://github.com/beir-cellar/beir/wiki/Leaderboard)
-- [Couse Material on IR](https://github.com/beir-cellar/beir/wiki/Course-material-on-ir)
+类似于Tensorflow [datasets](https://github.com/tensorflow/datasets) 或 Hugging Face的 [datasets](https://github.com/huggingface/datasets) 库，我们只是下载并准备了公共数据集。我们仅以特定格式分发这些数据集，但我们不保证其质量或公平性，也不声称您有使用该数据集的许可。用户有责任确定您是否有权根据数据集的许可使用数据集，并引用数据集的正确所有者。
 
-## :beers: Disclaimer
+如果您是数据集所有者并希望更新其任何部分，或不希望您的数据集包含在此库中，请随时在此处发布问题或提出拉取请求！
 
-Similar to Tensorflow [datasets](https://github.com/tensorflow/datasets) or Hugging Face's [datasets](https://github.com/huggingface/datasets) library, we just downloaded and prepared public datasets. We only distribute these datasets in a specific format, but we do not vouch for their quality or fairness, or claim that you have license to use the dataset. It remains the user's responsibility to determine whether you as a user have permission to use the dataset under the dataset's license and to cite the right owner of the dataset.
+如果您是数据集所有者并希望将您的数据集或模型包含在此库中，请随时在此处发布问题或提出拉取请求！
 
-If you're a dataset owner and wish to update any part of it, or do not want your dataset to be included in this library, feel free to post an issue here or make a pull request!
+## :beers: 引用与作者
 
-If you're a dataset owner and wish to include your dataset or model in this library, feel free to post an issue here or make a pull request!
-
-## :beers: Citing & Authors
-
-If you find this repository helpful, feel free to cite our publication [BEIR: A Heterogenous Benchmark for Zero-shot Evaluation of Information Retrieval Models](https://arxiv.org/abs/2104.08663):
+如果您发现此存储库有帮助，请随意引用我们的出版物 [BEIR: 用于信息检索模型零样本评估的异构基准](https://arxiv.org/abs/2104.08663)：
 
 ```
 @inproceedings{
@@ -208,10 +206,11 @@ If you find this repository helpful, feel free to cite our publication [BEIR: A 
 }
 ```
 
-If you use any baseline score from the BEIR leaderboard, feel free to cite our publication [Resources for Brewing BEIR: Reproducible Reference Models and an Official Leaderboard](https://arxiv.org/abs/2306.07471)
+如果您使用了BEIR排行榜中的任何基线分数，请随意引用我们的出版物 [酿造BEIR的资源：可复现的参考模型与官方排行榜](https://arxiv.org/abs/2306.07471)
+
 ```
 @misc{kamalloo2023resources,
-      title={Resources for Brewing BEIR: Reproducible Reference Models and an Official Leaderboard}, 
+      title={Resources for Brewing BEIR: Reproducible Reference Models and an Official Leaderboard},
       author={Ehsan Kamalloo and Nandan Thakur and Carlos Lassance and Xueguang Ma and Jheng-Hong Yang and Jimmy Lin},
       year={2023},
       eprint={2306.07471},
@@ -220,25 +219,27 @@ If you use any baseline score from the BEIR leaderboard, feel free to cite our p
 }
 ```
 
-The main contributors of this repository are:
-- [Nandan Thakur](https://github.com/Nthakur20), Personal Website: [nandan-thakur.com](https://nandan-thakur.com)
+此存储库的主要贡献者是：
 
-Contact person: Nandan Thakur, [nandant@gmail.com](mailto:nandant@gmail.com)
+- [Nandan Thakur](https://github.com/Nthakur20), 个人网站: [nandan-thakur.com](https://nandan-thakur.com)
 
-Don't hesitate to send us an e-mail or report an issue, if something is broken (and it shouldn't be) or if you have further questions.
+联系人: Nandan Thakur, [nandant@gmail.com](mailto:nandant@gmail.com)
 
-> This repository contains experimental software and is published for the sole purpose of giving additional background details on the respective publication.
+如果有任何问题或发现问题，请随时给我们发送电子邮件或报告问题。
 
-## :beers: Collaboration
+> 此存储库包含实验性软件，发布的唯一目的是提供有关相应出版物的更多背景细节。
 
-The BEIR Benchmark has been made possible due to a collaborative effort of the following universities and organizations:
+## :beers: 合作
+
+BEIR基准测试得以实现是由于以下大学和组织的合作努力：
+
 - [UKP Lab, Technical University of Darmstadt](http://www.ukp.tu-darmstadt.de/)
 - [University of Waterloo](https://uwaterloo.ca/)
 - [Hugging Face](https://huggingface.co/)
 
-## :beers: Contributors
+## :beers: 贡献者
 
-Thanks go to all these wonderful collaborations for their contribution towards the BEIR benchmark:
+感谢所有这些精彩的合作为BEIR基准测试做出的贡献：
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -254,6 +255,8 @@ Thanks go to all these wonderful collaborations for their contribution towards t
   </tr>
 </table>
 
+
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
